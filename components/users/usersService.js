@@ -7,5 +7,5 @@ exports.register = (fullName, email, password) => {
   // ...
   // Create user with bcrypt(password)
   // ...
-  return {id: 4, name: "Mr X", email: "x@abc.xyz"}
+  return {id: 4, name: fullName, email: email}
 }
