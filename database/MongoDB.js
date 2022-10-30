@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 const MongoConfig = require('./MongoConfig');
-
-const url = `mongodb+srv://${MongoConfig.host.dbUsername}:${MongoConfig.host.dbPassword}@${MongoConfig.host.cluster}/${MongoConfig.dbName}?retryWrites=true&w=majority`
-
+const url = `mongodb+srv://${MongoConfig.host.dbUsername}:${MongoConfig.host.dbPassword}@${MongoConfig.host.cluster}/?retryWrites=true&w=majority`
 
 module.exports.connect = async () => {
     mongoose.set('debug', true);
@@ -17,7 +15,7 @@ module.exports.connect = async () => {
     else {
         console.log('Creating new connection');
         await mongoose.connect(url, {
-            dbName: constants.mongoConfig.dbName
+            dbName: MongoConfig.dbName
         });
         console.log(`New connection created  ${mongoose.connection.readyState}`);
 
