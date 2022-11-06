@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const UserSchema = new mongoose.Schema({
@@ -9,41 +10,86 @@ const UserSchema = new mongoose.Schema({
 const UserModel = mongoose.model('user', UserSchema);
 
 
-exports.profile = async (email) => {
-  const user = await UserModel.findOne({ email: email }).lean();
-  if(!user){
-    throw new Error('User not found');
+exports.profile = async (_id) => {
+  console.log("id", _id);
+  const user = (await UserModel.findOne({ _id: _id })).toObject();
+  if (!user) {
+    return {
+      code: 404,
+      message: 'User not found'
+    }
   }
-  return user;
+  delete (user.password);
+  return {
+    code: 200,
+    data: user
+  };
 }
 
 exports.login = async (email, password) => {
-  const user = await UserModel.findOne({ email: email }).lean();
+  const user = (await UserModel.findOne({ email: email })).toObject();
   if (!user) {
-    throw new Error('User not found');
+    return {
+      code: 404,
+      message: 'User not found'
+    }
   }
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
-    throw new Error('Wrong password');
+    return {
+      code: 401,
+      message: 'Invalid password'
+    }
   }
-  return user;
+  // Create token
+  const token = jwt.sign(
+    { user_id: user._id, email },
+    process.env.TOKEN_KEY,
+    {
+      expiresIn: '2h',
+    }
+  );
+  delete (user.password);
+  user.token = token;
+  return {
+    code: 200,
+    data: user
+  };
 }
 
 exports.register = async (fullName, email, password) => {
   // Verify that email does not exist
   const user = await UserModel.findOne({ email: email });
   if (user) {
-    throw new Error('Email already exists');
+    return {
+      code: 409,
+      message: 'Email already exists'
+    }
   }
   // Hash password
   const hash = await bcrypt.hash(password, saltRounds);
 
   const newUser = new UserModel({
     fullName: fullName,
-    email: email,
+    email: email.toLowerCase(),
     password: hash
   });
-  const account =await newUser.save();
-  delete(account.password);
-  return account;
+  const account = (await newUser.save()).toObject();
+  // Create token
+  const token = jwt.sign(
+    { user_id: account._id, email },
+    process.env.TOKEN_KEY,
+    {
+      expiresIn: "2h",
+    }
+  );
+  console.log("token", token);
+  return {
+    code: 200,
+    data: {
+      email: account.email,
+      fullName: account.fullName,
+      token:  token
+    }
+  };
 }
