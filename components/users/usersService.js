@@ -12,7 +12,7 @@ const UserModel = mongoose.model('user', UserSchema);
 
 exports.profile = async (_id) => {
   console.log("id", _id);
-  const user = (await UserModel.findOne({ _id: _id })).toObject();
+  const user = (await UserModel.findOne({ _id: _id }))?.toObject();
   if (!user) {
     return {
       code: 404,
@@ -27,7 +27,7 @@ exports.profile = async (_id) => {
 }
 
 exports.login = async (email, password) => {
-  const user = (await UserModel.findOne({ email: email })).toObject();
+  const user = (await UserModel.findOne({ email: email }))?.toObject();
   if (!user) {
     return {
       code: 404,
@@ -74,7 +74,7 @@ exports.register = async (fullName, email, password) => {
     email: email.toLowerCase(),
     password: hash
   });
-  const account = (await newUser.save()).toObject();
+  const account = (await newUser.save())?.toObject();
   // Create token
   const token = jwt.sign(
     { user_id: account._id, email },
