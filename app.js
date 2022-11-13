@@ -9,7 +9,7 @@ var usersRouter = require('./components/users');
 var cors = require('cors');
 var app = express();
 app.use(cors({
-  origin: 'https://registration-web-app.netlify.app',
+  origin: '*',
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
 }));
 var passport = require('passport');
