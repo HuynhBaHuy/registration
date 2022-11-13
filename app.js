@@ -18,7 +18,7 @@ var corsOptions = {
     }
   }
 }
-app.use(cors(corsOptions));
+app.use(cors());
 var passport = require('passport');
 var { applyPassportStrategy } = require('./middlewares/passport');
 applyPassportStrategy(passport);
