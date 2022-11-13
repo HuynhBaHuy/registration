@@ -1,19 +1,15 @@
-const db = require('../../database/MongoDB')
 const usersService = require('./usersService');
 
 module.exports.profile = async (req, res) => {
+  console.log("req", req.user);
   try {
-    await db.connect();
-    const result = await usersService.profile(req.user.user_id);
+    const result = await usersService.profile(req.user._id);
     res.status(result.code).send(result);
-    await db.close();
   } catch (err) {
-    await db.close();
     res.status(500).send({
       code: 500,
       message: err.message ?? 'Unknown error',
     });
-    await db.close();
   }
 }
 
@@ -27,12 +23,9 @@ module.exports.login = async (req, res) => {
       });
       return;
     }
-    await db.connect();
     const result = await usersService.login(email, password);
     res.status(result.code).send(result);
-    await db.close();
   } catch (e) {
-    await db.close();
     res.status(500).send({ code: 500, message: e.message ?? 'Unknown error' });
   }
 }
@@ -44,12 +37,23 @@ module.exports.register = async (req, res) => {
       res.status(400).send({ code: 400, message: 'Missing required fields' });
       return;
     }
-    await db.connect();
     const result = await usersService.register(fullName, email, password)
     res.status(result.code).send(result);
-    await db.close()
   } catch (e) {
-    await db.close();
     res.status(500).send({ code: 500, message: e.message ?? 'Unknown error' });
   }
 };
+
+module.exports.refreshToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    if(!refreshToken) {
+      res.status(400).send({ code: 400, message: 'Missing required fields' });
+      return;
+    }
+    const result = await usersService.refreshToken(refreshToken);
+    res.status(result.code).send(result);
+  } catch (e) {
+    res.status(500).send({ code: 500, message: e.message ?? 'Unknown error' });
+  }
+}

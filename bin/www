@@ -4,30 +4,38 @@
  * Module dependencies.
  */
 
-var app = require('../app');
 var debug = require('debug')('rquiz-api:server');
 var http = require('http');
+require('dotenv').config()
+const db = require("../database/MongoDB");
 
-/**
- * Get port from environment and store in Express.
- */
+db.connect().then(() => {
+  console.log("Connected to DB successfully")
+  var app = require('../app');
+  /**
+   * Get port from environment and store in Express.
+   */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+  var port = normalizePort(process.env.PORT || '3000');
+  app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+  /**
+   * Create HTTP server.
+   */
 
-var server = http.createServer(app);
+  var server = http.createServer(app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+  server.listen(port, () => console.log(`Server listening on port ${port} ...`));
+  server.on('error', onError);
+  server.on('listening', () => onListening(server, debug));
+}).catch(err => {
+  console.error(err);
+  console.error("Connected to DB failed")
+})
 
 /**
  * Normalize a port into a number, string, or false.
@@ -81,7 +89,7 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
+function onListening(server, debug) {
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
