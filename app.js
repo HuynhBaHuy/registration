@@ -24,6 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors({
   origin: '*', // allow to server to accept request from different origin
+  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
 }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
