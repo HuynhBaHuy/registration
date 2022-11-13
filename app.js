@@ -11,7 +11,7 @@ var app = express();
 app.use(cors({
   origin: 'https://registration-web-app.netlify.app',
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Headers'],
-  // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
 var passport = require('passport');
