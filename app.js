@@ -10,7 +10,8 @@ var cors = require('cors');
 var app = express();
 app.use(cors({
   origin: 'https://registration-web-app.netlify.app/',
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept', 'Access-Control-Allow-Origin',],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept', 'Access-Control-Allow-Origin',"Access-Control-Allow-Headers", "Access-Control-Allow-Methods", "Access-Control-Allow-Credentials"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
 var passport = require('passport');
 var { applyPassportStrategy } = require('./middlewares/passport');
