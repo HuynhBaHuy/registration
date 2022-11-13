@@ -8,17 +8,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./components/users');
 var cors = require('cors');
 var app = express();
-var whitelist = ['http://localhost:3000', 'https://registration-web-app.netlify.app/']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://registration-web-app.netlify.app'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept']
+}));
 var passport = require('passport');
 var { applyPassportStrategy } = require('./middlewares/passport');
 applyPassportStrategy(passport);
