@@ -23,12 +23,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors({
-  origin: 'https://registration-web-app.netlify.app', // allow to server to accept request from different origin
-  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  origin: ['http://localhost:3000','https://registration-web-app.netlify.app'], // allow to server to accept request from different origin
+  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials, Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Headers',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   preflightContinue: true,
-  
-
 }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
