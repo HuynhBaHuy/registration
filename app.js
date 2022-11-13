@@ -8,7 +8,12 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./components/users');
 var cors = require('cors');
 var app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'https://registration-web-app.netlify.app/',
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept', 'Access-Control-Allow-Origin'],
+  // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
+}));
 var passport = require('passport');
 var { applyPassportStrategy } = require('./middlewares/passport');
 applyPassportStrategy(passport);
