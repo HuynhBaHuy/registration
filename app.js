@@ -8,14 +8,14 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./components/users');
 var cors = require('cors');
 var app = express();
-app.use(cors({
-  origin: '*',
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept', 'Access-Control-Allow-Origin'],
-}));
 var passport = require('passport');
 var { applyPassportStrategy } = require('./middlewares/passport');
 applyPassportStrategy(passport);
 
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://registration-web-app.netlify.app'],
+  credentials: true
+  }));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
