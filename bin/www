@@ -7,18 +7,7 @@
 var debug = require('debug')('rquiz-api:server');
 var http = require('http');
 require('dotenv').config()
-var cors = require('cors');
-var whitelist = ['http://localhost:3000', 'https://registration-web-app.netlify.app/']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-app.use(cors(corsOptions));
+
 const db = require("../database/MongoDB");
 
 db.connect().then(() => {
