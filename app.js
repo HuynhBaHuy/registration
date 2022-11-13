@@ -8,14 +8,14 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./components/users');
 var cors = require('cors');
 var app = express();
+var { applyPassportStrategy } = require('./middlewares/passport');
+var passport = require('passport');
+applyPassportStrategy(passport);
 app.use(cors(
   {
     origin: '*',
   }
 ));
-var { applyPassportStrategy } = require('./middlewares/passport');
-var passport = require('passport');
-applyPassportStrategy(passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
