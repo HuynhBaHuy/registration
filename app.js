@@ -13,8 +13,7 @@ var { applyPassportStrategy } = require('./middlewares/passport');
 applyPassportStrategy(passport);
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://registration-web-app.netlify.app'],
-  credentials: true
+  origin: ['http://localhost:3000', 'https://registration-web-app.netlify.app']
   }));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
